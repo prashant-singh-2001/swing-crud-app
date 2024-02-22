@@ -119,12 +119,12 @@ public class App {
 					eI.requestFocus();
 					return;
 				}
-				if (!Validator.isValidEmail(getEmail)) {
-					JOptionPane.showMessageDialog(null, "Email is Invalid!");
-					eI.requestFocus();
-					return;
-				}
 				try {
+					if (!Validator.isValidEmail(getEmail, conn)) {
+						JOptionPane.showMessageDialog(null, "Email is Invalid!");
+						eI.requestFocus();
+						return;
+					}
 					String query = "INSERT INTO user_master (name,email) VALUES(?,?)";
 					pst = conn.prepareStatement(query);
 					pst.setString(1, getName);
@@ -162,12 +162,13 @@ public class App {
 					eI.requestFocus();
 					return;
 				}
-				if (!Validator.isValidEmail(getEmail)) {
-					JOptionPane.showMessageDialog(null, "Email is Invalid!");
-					eI.requestFocus();
-					return;
-				}
+
 				try {
+					if (!Validator.isValidEmail(getEmail, conn, UID)) {
+						JOptionPane.showMessageDialog(null, "Email is Invalid!");
+						eI.requestFocus();
+						return;
+					}
 					String query = "UPDATE user_master SET name=? , email=? WHERE uid=?";
 					pst = conn.prepareStatement(query);
 					pst.setString(1, getName);
@@ -202,13 +203,13 @@ public class App {
 		});
 		clear.setBounds(30, 175, 70, 30);
 		panel.add(clear);
-		
+
 		JButton delete = new JButton("Delete");
 		delete.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
 					String query = "DELETE FROM user_master WHERE uid=?";
 					pst = conn.prepareStatement(query);
@@ -229,7 +230,6 @@ public class App {
 		delete.setBounds(290, 175, 80, 30);
 		delete.setEnabled(false);
 		panel.add(delete);
-		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(20, 270, 400, 400);
